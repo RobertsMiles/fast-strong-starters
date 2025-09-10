@@ -457,7 +457,7 @@ fn hamilton_test() {
 
     println!("\n∀(a,b)∈f(P) k=a+b such that: S U f(P) is a hamilton starter)");
 }
-fn hamilton(n: i32, seed:u32) {
+fn hamilton(n: i32, seed: u32) {
     //focus: 31,35,17,55
     let strong_starter = speedy_strong::create(n, seed);
     let strong_starter = Starter::new(n, strong_starter).unwrap();
@@ -475,6 +475,25 @@ fn hamilton(n: i32, seed:u32) {
     }
 
     println!("\n∀(a,b)∈f(P) k=a+b such that: S U f(P) is a hamilton starter)");
+    let mut sums = vec![];
+    for pair in &strong_starter.get_pairs() {
+        sums.push((pair.0 + pair.1) % n);
+    }
+    for delta in 2..(n - 2) {
+        let mut good = true;
+        let mut temps: Vec<i32> = vec![];
+        for sum in &sums {
+            temps.push((delta * sum) % n)
+        }
+        for temp in &temps {
+            if sums.contains(temp) {
+                good = false;
+            }
+        }
+        if good {
+            println!("Delta = {}", delta)
+        }
+    }
 }
 fn hamilton_skew(n: i32, seed: u32) {
     let strong_starter_v = speedy_strong::create_skew(n, seed);
@@ -517,8 +536,19 @@ fn hamilton_skew(n: i32, seed: u32) {
 
 fn main() {
     //multiples of 3 seem to be an issue
-    hamilton(17,1000);
+
+    let valids = speedy_strong::create_all_delta(25, 1);
+    for valid in &valids {
+        println!("{:?}", valid);
+    }
+    /*
+    let limit = 1000000;
+    for i in 1..limit {
+        hamilton(25, i);
+        println!("{}", i as f64 / limit as f64);
+    }
+    */
     //for i in 0..100000 {
-   // /}
+    // /}
     //hamilton_skew(15, 0);
 }
