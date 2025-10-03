@@ -229,7 +229,7 @@ def assert_valid_strong_starter(starter,n):
     sums = set()
     diffs= set()
     for pair in starter:
-        diff = min((pair[1]-pair[0])%n,(pair[1]-pair[0])%n) 
+        diff = min((pair[1]-pair[0])%n,(pair[0]-pair[1])%n) 
         assert sum(pair)%n not in sums
         assert diff not in diffs
         sums.add(sum(pair)%n)
