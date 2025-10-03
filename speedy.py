@@ -225,7 +225,18 @@ def speedy(starter,n,deficiency,D,unused,unused_sums):
                         
 
 
-
+def assert_valid_strong_starter(starter,n):
+    sums = set()
+    diffs= set()
+    for pair in starter:
+        diff = min((pair[1]-pair[0])%n,(pair[1]-pair[0])%n) 
+        assert sum(pair)%n not in sums
+        assert diff not in diffs
+        sums.add(sum(pair)%n)
+        diffs.add(diff)
+    print("Sums of the starter: ",sums)
+    print("Diffs of the starter: ",diffs)
+    return True
 
 
 
@@ -239,4 +250,10 @@ while not x:
     unused_sums = list(range(1,n))
     stack=[]
     x = speedy(starter,n,deficiency,D,unused,unused_sums)
+
+print("Testing if it is valid: ")
+assert_valid_strong_starter(starter,n)
+print("Passed valid Test! ")
+
+print("Our very epic strong starter: ")
 print(starter)
