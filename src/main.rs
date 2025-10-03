@@ -536,35 +536,15 @@ fn hamilton_skew(n: i32, seed: u32) {
 
 fn main() {
     //multiples of 3 seem to be an issue
-    let strong = vec![
-        (27, 31),
-        (8, 23),
-        (9, 32),
-        (6, 24),
-        (19, 20),
-        (16, 22),
-        (5, 7),
-        (1, 33),
-        (13, 29),
-        (17, 28),
-        (4, 18),
-        (12, 34),
-        (25, 30),
-        (3, 11),
-    ];
-    let n = 35;
-    for k in 0..(2 * n) {
-        if k % 2 == 0 {
-            let x = Starter::hamilton(n, k, &Starter::new(n, strong.clone()).unwrap(), false);
-            if x {
-                print!("{},", k % n);
-            }
-        }
+    let valids = speedy_strong::create_all_delta(25, 1);
+    for valid in &valids {
+        println!("{:?}", valid);
     }
-
     /*
-    for i in 1..10000 {
+    let limit = 1000000;
+    for i in 1..limit {
         hamilton(25, i);
+        println!("{}", i as f64 / limit as f64);
     }
     */
     //for i in 0..100000 {
