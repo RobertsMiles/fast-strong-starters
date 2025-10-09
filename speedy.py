@@ -1,6 +1,7 @@
 import random
 import itertools 
 import copy
+import threading
 
 
 '''
@@ -27,14 +28,16 @@ def calculate_T(n,u_1,u_2,d,unused):
 
 
 starter = [] # S={}
-t=25
+t=(27-1)//2 # change this for different results
 n=2*t+1
+#assert n%3!=0
 all_pairs = list(itertools.combinations(range(1,n),2))
 deficiency=t
 D=list(range(1,t+1))  # Differences
 unused=list(range(1,n))  # Unused
 unused_sums = list(range(1,n))
 
+fails=0
 
 
 stack=[] #used for backtracking
@@ -42,7 +45,13 @@ stack=[] #used for backtracking
 
 def can_insert(pair,starter,unused,unused_sums,D,n):
     (a,b) = pair
-    return a in unused and b in unused and (a+b)%n in unused_sums and min((a-b)%n,(b-a)%n) in D
+    temp_unused_sums = copy.deepcopy(unused_sums)
+    deltas = 999
+    if sum(pair)%n in temp_unused_sums:
+        temp_unused_sums.remove(sum(pair)%n)
+        deltas=count_deltas(temp_unused_sums,n)
+
+    return a in unused and b in unused and (a+b)%n in unused_sums and min((a-b)%n,(b-a)%n) in D  and deltas>0
 
 
 def insert(pair,starter,unused,unused_sums,D,n):
@@ -79,7 +88,7 @@ def get_pair_by_element(starter,element):
     return None
 def get_pair_by_diff(starter,n,diff):
     for pair in starter:
-        if min((pair[0]-pair[1])%n,(pair[1]-pair[0])%n) in pair:
+        if min((pair[0]-pair[1])%n,(pair[1]-pair[0])%n) == diff:
             return pair
     return None
 
@@ -131,8 +140,8 @@ def B(u1,u2,d,starter,n,unused,unused_sums,D,stack):
         elif w not in unused and y in unused_sums:
             (x_i,y_i) = p =get_pair_by_element(starter,w)
             remove(p,starter,unused,unused_sums,D,n)
-            if can_insert((u2,w),starter,unused,unused_sums,D,n):
-                insert((u2,w),starter,unused,unused_sums,D,n)
+            if can_insert((u1,w),starter,unused,unused_sums,D,n):
+                insert((u1,w),starter,unused,unused_sums,D,n)
             else:
                 insert(p,starter,unused,unused_sums,D,n)
                 continue
@@ -161,7 +170,7 @@ def D_(u1,u2,d,D,stack):
     x=random.choice(D)
     while(x==d):
         x=random.choice(D)
-    return (u1,u2,d)
+    return (u1,u2,x)
 
 def E(u1,u2,d,starter,n,unused,unused_sums,D,stack):
     stack.append((u1,u2,d))
@@ -217,12 +226,32 @@ def speedy(starter,n,deficiency,D,unused,unused_sums):
                     (u1,u2,d) = stack[-1]
         
         #I think I have some bug somewhere in the algorithm so this is how i am checking for fails
-        if len(stack)>1000*n: 
-            print("failed")
+        if len(stack)>3*n: 
+            #print("failed")
             return None
 
     return starter
                         
+def gcd(a,b):
+    if a%b==0:
+        return b
+    return gcd(b,a%b)
+def count_deltas(unused_sums,n):
+    sums = set(range(1,n)).difference(set(unused_sums))
+    total = 0
+    for delta in range(2,n-1):
+        good = True
+        if gcd(n,delta)>1:
+            good=False
+        delta_sums = [(s*delta)%n for s in sums]
+        for ds in delta_sums:
+            if ds in sums:
+                good=False
+                break
+        if good:
+            total+=1
+    return total
+
 
 
 def assert_valid_strong_starter(starter,n):
@@ -234,6 +263,16 @@ def assert_valid_strong_starter(starter,n):
         assert diff not in diffs
         sums.add(sum(pair)%n)
         diffs.add(diff)
+    for delta in range(2,n-1):
+        delta_sums = [(s*delta)%n for s in sums]
+        good = True
+        for ds in delta_sums:
+            if ds in sums:
+                good=False
+                break
+        if good:
+            print("Delta =",delta)
+
     print("Sums of the starter: ",sums)
     print("Diffs of the starter: ",diffs)
     return True
@@ -250,6 +289,11 @@ while not x:
     unused_sums = list(range(1,n))
     stack=[]
     x = speedy(starter,n,deficiency,D,unused,unused_sums)
+
+    if not x:
+        fails+=1
+        if random.random()<0.01:
+            print(fails)
 
 print("Testing if it is valid: ")
 assert_valid_strong_starter(starter,n)
