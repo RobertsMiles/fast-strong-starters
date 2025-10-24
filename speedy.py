@@ -27,21 +27,6 @@ def calculate_T(n,u_1,u_2,d,unused):
     return T
 
 
-starter = [] # S={}
-t=(27-1)//2 # change this for different results
-n=2*t+1
-#assert n%3!=0
-all_pairs = list(itertools.combinations(range(1,n),2))
-deficiency=t
-D=list(range(1,t+1))  # Differences
-unused=list(range(1,n))  # Unused
-unused_sums = list(range(1,n))
-
-fails=0
-
-
-stack=[] #used for backtracking
-
 
 def can_insert(pair,starter,unused,unused_sums,D,n):
     (a,b) = pair
@@ -196,7 +181,7 @@ def pick_random_unused(unused,D):
     return (u1,u2,diff)
 
 
-def speedy(starter,n,deficiency,D,unused,unused_sums):
+def speedy(starter,n,deficiency,D,unused,unused_sums,stack):
     #lowkey kinda cursed loop, there may be some bugs since the paper 
     while deficiency>0:
 
@@ -277,27 +262,53 @@ def assert_valid_strong_starter(starter,n):
     print("Diffs of the starter: ",diffs)
     return True
 
-
-
+starter = [] # S={}
+t=(97-1)//2 # change this for different results
+n=2*t+1
 print(f"N = {n}")
-x = speedy(starter,n,deficiency,D,unused,unused_sums)
-while not x:
-    starter = [] # S={}
+#assert n%3!=0
+def test(t,n,starter):
+    all_pairs = list(itertools.combinations(range(1,n),2))
     deficiency=t
     D=list(range(1,t+1))  # Differences
     unused=list(range(1,n))  # Unused
     unused_sums = list(range(1,n))
-    stack=[]
-    x = speedy(starter,n,deficiency,D,unused,unused_sums)
 
-    if not x:
-        fails+=1
-        if random.random()<0.01:
-            print(fails)
+    fails=0
 
-print("Testing if it is valid: ")
-assert_valid_strong_starter(starter,n)
-print("Passed valid Test! ")
 
-print("Our very epic strong starter: ")
-print(starter)
+    stack=[] #used for backtracking
+
+    x = speedy(starter,n,deficiency,D,unused,unused_sums,stack)
+    while not x:
+        starter = [] # S={}
+        deficiency=t
+        D=list(range(1,t+1))  # Differences
+        unused=list(range(1,n))  # Unused
+        unused_sums = list(range(1,n))
+        stack=[]
+        x = speedy(starter,n,deficiency,D,unused,unused_sums,stack)
+
+        if not x:
+            fails+=1
+            if random.random()<0.01:
+                pass
+            #print(fails)
+
+    print("Testing if it is valid: ")
+    assert_valid_strong_starter(starter,n)
+    print("Passed valid Test! ")
+
+    print("Our very epic strong starter: ")
+    print(starter)
+def extreme():
+    test(t,n,[])
+num_threads=8
+threads = []
+for i in range(num_threads):
+    threads.append(threading.Thread(target=extreme))
+for i in range(num_threads):
+    threads[i].start()
+for i in range(num_threads):
+    threads[i].join()
+
