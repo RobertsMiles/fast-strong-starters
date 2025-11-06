@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-C:\Users\DSU\ Student\research\Based-Design-Theory\target\release\Based-Design-Theory.exe: C:\Users\DSU\ Student\research\Based-Design-Theory\src\latin_square.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\main.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\speedy_strong.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\starter.rs
-=======
-C:\Users\DSU\ Student\OneDrive\ -\ Dakota\ State\ University\Desktop\kali\Based-Design-Theory\target\release\Based-Design-Theory.exe: C:\Users\DSU\ Student\OneDrive\ -\ Dakota\ State\ University\Desktop\kali\Based-Design-Theory\src\latin_square.rs C:\Users\DSU\ Student\OneDrive\ -\ Dakota\ State\ University\Desktop\kali\Based-Design-Theory\src\main.rs C:\Users\DSU\ Student\OneDrive\ -\ Dakota\ State\ University\Desktop\kali\Based-Design-Theory\src\speedy_strong.rs C:\Users\DSU\ Student\OneDrive\ -\ Dakota\ State\ University\Desktop\kali\Based-Design-Theory\src\starter.rs
->>>>>>> 0a58aac0d2e9d3cb8dd825a02ec61301d121359d

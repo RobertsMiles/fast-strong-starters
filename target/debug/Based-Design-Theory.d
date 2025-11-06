@@ -1,1 +1,0 @@
-C:\Users\DSU\ Student\research\Based-Design-Theory\target\debug\Based-Design-Theory.exe: C:\Users\DSU\ Student\research\Based-Design-Theory\src\latin_square.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\main.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\speedy_strong.rs C:\Users\DSU\ Student\research\Based-Design-Theory\src\starter.rs
